@@ -39,6 +39,11 @@ dependencies:
   get: ^4.6.6
   aws_s3_upload: ^1.5.0
   image_picker: ^1.0.7
+  hive: ^2.2.3  # Hive for storing data locally
+  hive_flutter: ^1.1.0
+  dio: ^5.4.2+1
+  path_provider:
+  connectivity:
 
 dev_dependencies:
   flutter_test:
@@ -52,7 +57,7 @@ dev_dependencies:
   flutter_lints: ^2.0.0
   freezed: ^2.2.1
   build_runner: ^2.4.5
-  dio: ^5.4.2+1
+  hive_generator:
 
 
 # For information on the generic Dart part of this file, see the

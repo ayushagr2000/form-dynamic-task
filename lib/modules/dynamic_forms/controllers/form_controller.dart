@@ -1,12 +1,12 @@
-import 'dart:io';
 
-import 'package:aws_s3_upload/aws_s3_upload.dart';
 import 'package:flutter/material.dart';
-import 'package:form_sync_project/modules/dynamic_forms/models/form_field_model.dart';
+import 'package:form_sync_project/services/API/api_end_points.dart';
+import 'package:form_sync_project/services/hive/hive_helper.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../../../services/API/api_services.dart';
+import '../../../services/connectivity/connectivity_controller.dart';
 import '../models/form_model.dart';
 
 class FormController extends GetxController {
@@ -79,17 +79,33 @@ List<String> missingElements = [];
     return true;
   }
 
-  void submitForm() {
+  Future<void> submitForm() async {
 
     if (validateForm()) {
+      Map<String, dynamic> body = prepareData();
 
+final connectivityController = Get.find<ConnectivityController>();
 
-Map<String, dynamic> body = prepareData();
+   
+      if (connectivityController.isConnected) {
+   
+
 
       print("About to send " + body.toString());
 
 
  ApiService.submitResponse(body);
+      } else {
+        // Offline - Store in Hive
+        await HiveHelper.addPendingRequest(
+          ApiEndpoints.submitFormData, // Adjust URL
+          body, // Replace with actual form data
+        );
+        // Show a message indicating offline storage
+        Get.snackbar("Offline", "Form data saved offline for submission later.", snackPosition: SnackPosition.BOTTOM);
+      }
+
+
 
     } else {
       print("Validation failed");

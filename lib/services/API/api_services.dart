@@ -11,6 +11,8 @@ class ApiService {
         print("getFormModel response" + response.data.toString());
 
     if (response.statusCode == 200) {
+      print("Success");
+      print(response.statusCode);
       return FormModel.fromJson(response.data);
     } else {
       throw Exception("Failed to get form data");

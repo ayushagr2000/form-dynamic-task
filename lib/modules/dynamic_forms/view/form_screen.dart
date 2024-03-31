@@ -2,8 +2,8 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:form_sync_project/modules/dynamic_forms/models/form_field_model.dart';
+import 'package:form_sync_project/services/hive/hive_helper.dart';
 import 'package:get/get.dart';
-import 'package:image_picker/image_picker.dart';
 
 import '../controllers/form_controller.dart';
 import '../models/form_model.dart';
@@ -53,7 +53,10 @@ class DynamicFormWidget extends StatelessWidget {
           ),
           ElevatedButton(onPressed: (){
             Get.find<FormController>().submitForm();
-          }, child: Text("Submit"))
+          }, child: Text("Submit")),
+           ElevatedButton(onPressed: (){
+           HiveHelper.getPendingRequests();
+          }, child: Text("print pending")),
         ],
       ),
     );
