@@ -25,13 +25,8 @@ class FormController extends GetxController {
         Get.snackbar('Oops', l.message);
       }, (data) {
         _formModel = data;
-        for (int i = 0; i < _formModel!.fields.length; i++) {
-          var feild = _formModel!.fields[i];
-          if (feild.componentType == "DropDown" &&
-              (feild.metaInfo.options?.isNotEmpty ?? false)) {
-            _formData[i] = feild.metaInfo.options![0];
-          }
-        }
+        initalDataSet();
+
         update();
       });
     } catch (error) {
@@ -39,7 +34,19 @@ class FormController extends GetxController {
     }
   }
 
-  final Map<int, dynamic> _formData = {};
+  void initalDataSet() {
+    _formData = {};
+    for (int i = 0; i < _formModel!.fields.length; i++) {
+      var feild = _formModel!.fields[i];
+      if (feild.componentType == "DropDown" &&
+          (feild.metaInfo.options?.isNotEmpty ?? false)) {
+        _formData[i] = feild.metaInfo.options![0];
+      }
+    }
+    update();
+  }
+
+  Map<int, dynamic> _formData = {};
   Map<int, dynamic> get formData => _formData;
 
   void updateField(int index, dynamic value) {
@@ -87,15 +94,16 @@ class FormController extends GetxController {
     if (validateForm()) {
       final connectivityController = Get.find<ConnectivityController>();
       print(connectivityController.isConnected);
-      connectivityController.checkConnectivity().then((res){
+      connectivityController.checkConnectivity().then((res) {
         print(res);
       });
 
       if (connectivityController.isConnected) {
-       await sendToServer();
+        await sendToServer();
       } else {
-     await saveInHive();
+        await saveInHive();
       }
+      initalDataSet();
     }
   }
 
@@ -112,10 +120,10 @@ class FormController extends GetxController {
   }
 
   Future<void> saveInHive() async {
-   var body = convertFormDataBodyToFormat();
-        await HiveHelper.addPendingRequest(ApiEndpoints.submitFormData, body);
-        Get.snackbar("Offline", "Form data saved offline for submission later.",
-            snackPosition: SnackPosition.BOTTOM);
+    var body = convertFormDataBodyToFormat();
+    await HiveHelper.addPendingRequest(ApiEndpoints.submitFormData, body);
+    Get.snackbar("Offline", "Form data saved offline for submission later.",
+        snackPosition: SnackPosition.BOTTOM);
   }
 
   Future<void> handlePickImage(
