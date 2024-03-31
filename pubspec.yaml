@@ -44,7 +44,9 @@ dependencies:
   dio: ^5.4.2+1
   path_provider:
   connectivity:
-
+  # flutter_background_service: ^2.0.0
+  workmanager:
+  dartz:
 dev_dependencies:
   flutter_test:
     sdk: flutter

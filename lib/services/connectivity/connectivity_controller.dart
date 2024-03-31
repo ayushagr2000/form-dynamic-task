@@ -13,9 +13,8 @@ class ConnectivityController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    print("ConnectivityController: Initialized");
     _connectivitySubscription = _connectivity.onConnectivityChanged.listen(_onConnectivityChange);
-    _checkConnectivity();
+    checkConnectivity();
     
   }
 
@@ -25,11 +24,10 @@ class ConnectivityController extends GetxController {
     _connectivitySubscription?.cancel();
   }
 
-  Future<void> _checkConnectivity() async {
+  Future<ConnectivityResult?> checkConnectivity() async {
     _connectivityResult = await _connectivity.checkConnectivity();
-            print("ConnectivityController: Initial network " + _connectivityResult.toString());
-
-    update(); // Update UI with initial connectivity status
+         update();
+         return _connectivityResult;
   }
 
   void _onConnectivityChange(ConnectivityResult result) {
@@ -39,7 +37,7 @@ class ConnectivityController extends GetxController {
     }
    
          print("ConnectivityController:  network change " + _connectivityResult.toString()); 
-    update(); // Update UI with changed connectivity status
+    update(); 
   }
 
   bool get isConnected => _connectivityResult == ConnectivityResult.mobile || _connectivityResult == ConnectivityResult.wifi;

@@ -1,8 +1,5 @@
 class ApiEndpoints {
-  static const String getForm = "https://chatbot-api.grampower.com/flutter-assignment";
-    static const String submitFormData = "https://chatbot-api.grampower.com/flutter-assignment/push";
-
-
-
-  
+  static const String baseUrl = "https://chatbot-api.grampower.com/";
+  static const String getForm = "flutter-assignment";
+  static const String submitFormData = "flutter-assignment/push";
 }
