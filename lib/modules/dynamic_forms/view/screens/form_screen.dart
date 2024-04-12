@@ -25,9 +25,9 @@ class FormScreen extends StatelessWidget {
                 child: const Text("Logs"))
           ],
         ),
-        body: controller.formModel == null
-            ? const Center(child: CircularProgressIndicator())
-            : DynamicFormWidget(formModel: controller.formModel!),
+        body: controller.modelDataState == DataState.loading
+            ? const Center(child: CircularProgressIndicator()): controller.modelDataState == DataState.fetched
+            ? DynamicFormWidget(formModel: controller.formModel!): const Center(child: Text("Something went wrong"))
       ),
     );
   }

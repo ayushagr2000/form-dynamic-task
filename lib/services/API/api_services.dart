@@ -35,10 +35,10 @@ class ApiService {
       if (response.statusCode == 200) {
         return Right(FormModel.fromJson(response.data));
       } else {
-        return Left(ErrorModel("Failed to get form data"));
+        return Left(ErrorModel(response.statusCode.toString()));
       }
     } catch (e) {
-      return Left(ErrorModel("Failed to get form data"));
+         return Left(ErrorModel(e.toString()));
     }
   }
 

@@ -8,7 +8,10 @@ import '../../../services/API/api_services.dart';
 import '../../../services/connectivity/connectivity_controller.dart';
 import '../models/form_model.dart';
 
+enum DataState{idle,loading, error, fetched}
+
 class FormController extends GetxController {
+DataState modelDataState = DataState.idle;
   FormModel? _formModel;
   FormModel? get formModel => _formModel;
 
@@ -20,13 +23,18 @@ class FormController extends GetxController {
 
   Future<void> fetchDynamicFormFields() async {
     try {
+      modelDataState = DataState.loading;
+            update();
       final data = await ApiService.getFormModel();
       data.fold((l) {
+        modelDataState = DataState.error;
+              update();
         Get.snackbar('Oops', l.message);
       }, (data) {
         _formModel = data;
         initalDataSet();
-
+        
+      modelDataState = DataState.fetched;
         update();
       });
     } catch (error) {
